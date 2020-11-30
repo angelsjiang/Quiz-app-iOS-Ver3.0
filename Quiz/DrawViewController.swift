@@ -11,6 +11,7 @@ class DrawViewController: UIViewController {
     
     var triviaQuestion: TriviaQuestion!
     var imageStore: ImageStore!
+    var drawView: DrawView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -19,13 +20,16 @@ class DrawViewController: UIViewController {
         print(triviaQuestion.question)
         print(triviaQuestion.answer)
         
+        
         // load the current image, convert it into draw
-        if imageStore.image(forKey: triviaQuestion.imageKey) != nil {
-            // set image
-        }
-        else {
-            // blanck canvas, probably don't need to do anything
-        }
+//        if !triviaQuestion.drawing.isEmpty {
+//            // set image
+//            print("not nil!")
+//        }
+//        else {
+//            // blanck canvas, probably don't need to do anything
+//            print("nil...")
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,6 +38,7 @@ class DrawViewController: UIViewController {
         // convert the drawing into UIImage, and save the image to the triviaQuestion
         let image = self.view.asImage()
         imageStore.setImage(image, forKey: triviaQuestion.imageKey)
+//        triviaQuestion.drawing = drawView.finishedLines
     }
 }
 

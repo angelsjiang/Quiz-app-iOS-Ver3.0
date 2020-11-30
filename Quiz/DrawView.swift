@@ -11,6 +11,8 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     
     var currentLine: Line?
     var finishedLines = [Line]()
+    var greeting = "hello"
+    
     var selectedLineIndex: Int? {
         didSet {
             if selectedLineIndex == nil {
@@ -22,12 +24,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     var changeColorIndex: Int?
     var moveRecognizer: UIPanGestureRecognizer!
     
-    @IBInspectable var finishedLineColor: UIColor = UIColor.black {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    
+    var finishedLineColor = UIColor.black
     @IBInspectable var currentLineColor: UIColor = UIColor.red {
         didSet {
             setNeedsDisplay()
@@ -94,6 +91,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     @objc func longPress(_ gestureRecognizer: UIGestureRecognizer) {
         print("Recognized a long press")
         let point = gestureRecognizer.location(in: self)
+        
 
         if gestureRecognizer.state == .began {
             selectedLineIndex = indexOfLine(at: point)
@@ -105,14 +103,13 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
         else if gestureRecognizer.state == .ended {
             selectedLineIndex = nil
             
-            
             // pop up pen color
             let menu = UIMenuController.shared
 
-            let orangeStroke = UIMenuItem(title: "Orange", action: #selector(DrawView.changeToOrange(_:)))
-            let pinkStroke = UIMenuItem(title: "Pink", action: #selector(DrawView.changeToPink(_:)))
-            let purpleStroke = UIMenuItem(title: "Purple", action: #selector(DrawView.changeToPurple(_:)))
-            let lightGrayStroke = UIMenuItem(title: "Light Gray", action: #selector(DrawView.changeToLightGray(_:)))
+            let orangeStroke = UIMenuItem(title: "Orange", action: #selector(DrawView.changePenToOrange(_:)))
+            let pinkStroke = UIMenuItem(title: "Pink", action: #selector(DrawView.changePenToPink(_:)))
+            let purpleStroke = UIMenuItem(title: "Purple", action: #selector(DrawView.changePenToPurple(_:)))
+            let lightGrayStroke = UIMenuItem(title: "Light Gray", action: #selector(DrawView.changePenToLightGray(_:)))
 
             menu.menuItems = [orangeStroke, pinkStroke, purpleStroke, lightGrayStroke]
 
@@ -194,6 +191,25 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     }
     
     
+    // change pen color
+    @objc func changePenToOrange(_ sender: UIMenuController) {
+        finishedLineColor = UIColor.orange
+    }
+    
+    @objc func changePenToLightGray(_ sender: UIMenuController) {
+        finishedLineColor = UIColor.lightGray
+    }
+    
+    @objc func changePenToPink(_ sender: UIMenuController) {
+        finishedLineColor = UIColor.systemPink
+    }
+    
+    @objc func changePenToPurple(_ sender: UIMenuController) {
+        finishedLineColor = UIColor.purple
+    }
+
+
+    
     @objc func deleteLine(_ sender: UIMenuController) {
         // how to add alert??
         if let index = self.selectedLineIndex {
@@ -204,11 +220,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
         setNeedsDisplay()
     }
     
-    @objc func changePenToOrange(_ sender: UIMenuController) {
-        finishedLineColor = UIColor.orange
-    }
-    
-    
+    // change the color of line
     @objc func changeToOrange(_ sender: UIMenuController) {
         if let index = selectedLineIndex {
             finishedLines[index].color = UIColor.orange
@@ -278,11 +290,11 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if var line = currentLine {
-            line.color = finishedLineColor
             let touch = touches.first!
             let location = touch.location(in: self)
             line.end = location
-                        
+            
+            line.color = finishedLineColor
             finishedLines.append(line)
         }
         currentLine = nil

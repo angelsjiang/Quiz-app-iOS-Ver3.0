@@ -13,6 +13,7 @@ class TriviaQuestion: Equatable, Codable {
     var answer: String
     let date: Date
     let imageKey: String
+//    var drawing = [Line]()
     
     init(question: String, answer: String) {
         self.question = question

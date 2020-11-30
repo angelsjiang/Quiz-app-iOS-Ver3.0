@@ -17,3 +17,4 @@ struct Line {
     var color = UIColor.black
 
 }
+
