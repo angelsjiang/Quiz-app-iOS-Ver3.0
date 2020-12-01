@@ -199,10 +199,10 @@ class FLBController: UIViewController, UITextFieldDelegate {
             questionImage.image = imageStore.image(forKey:
                                                     FLBQuestions.questionArray[currentQuestionIndex].imageKey)
             
-            FLBSubmitBtn.isEnabled = true
-            FLBSubmitBtn.alpha = 1
-            FLBNextBtn.isEnabled = false
-            FLBNextBtn.alpha = 0.3
+//            FLBSubmitBtn.isEnabled = true
+//            FLBSubmitBtn.alpha = 1
+//            FLBNextBtn.isEnabled = false
+//            FLBNextBtn.alpha = 0.3
 
         }
 
